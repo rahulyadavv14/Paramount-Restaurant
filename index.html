@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramount Restaurant | Mumbai's Finest Dining</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: '#D4AF37',
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4E5C2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .menu-item {
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .menu-item:hover::before {
+            left: 100%;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-darker text-gray-100 font-sans overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-gold to-yellow-600 rounded-full flex items-center justify-center">
+                        <span class="text-black font-bold text-xl">P</span>
+                    </div>
+                    <span class="font-serif text-2xl font-bold text-white tracking-wide">Paramount</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-gray-300 hover:text-gold transition-colors duration-300 text-sm uppercase tracking-wider">Home</a>
+                    <a href="#about" class="text-gray-300 hover:text-gold transition-colors duration-300 text-sm uppercase tracking-wider">About</a>
+                    <a href="#menu" class="text-gray-300 hover:text-gold transition-colors duration-300 text-sm uppercase tracking-wider">Menu</a>
+                    <a href="#gallery" class="text-gray-300 hover:text-gold transition-colors duration-300 text-sm uppercase tracking-wider">Gallery</a>
+                    <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-gold to-yellow-600 text-black font-semibold rounded-full hover:shadow-lg hover:shadow-gold/50 transition-all duration-300 transform hover:scale-105">
+                        Reserve Table
+                    </a>
+                </div>
+
+                <button class="md:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark/95 backdrop-blur-lg absolute w-full border-t border-gray-800">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block px-3 py-2 text-gray-300 hover:text-gold">Home</a>
+                <a href="#about" class="block px-3 py-2 text-gray-300 hover:text-gold">About</a>
+                <a href="#menu" class="block px-3 py-2 text-gray-300 hover:text-gold">Menu</a>
+                <a href="#contact" class="block px-3 py-2 text-gold font-semibold">Reserve Table</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-darker z-10"></div>
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Restaurant Ambiance" 
+                 class="w-full h-full object-cover scale-110 animate-pulse" style="animation-duration: 20s;">
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-1/4 left-10 w-32 h-32 bg-gold/20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-10 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="text-gold text-sm tracking-[0.3em] uppercase font-semibold border-b-2 border-gold pb-2">Est. 1985 • Mumbai</span>
+            </div>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+                Taste the <span class="text-gradient italic">Extraordinary</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Experience authentic flavors in the heart of Mumbai. Where tradition meets modern culinary artistry.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#menu" class="px-8 py-4 bg-gradient-to-r from-gold to-yellow-600 text-black font-bold rounded-full hover:shadow-2xl hover:shadow-gold/50 transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-utensils"></i> View Menu
+                </a>
+                <a href="tel:+912212345678" class="px-8 py-4 border-2 border-gold text-gold font-semibold rounded-full hover:bg-gold hover:text-black transition-all duration-300 flex items-center gap-2">
+                    <i class="fas fa-phone"></i> Call Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-gold text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-dark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-gold to-orange-600 rounded-2xl opacity-30 blur-2xl"></div>
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Restaurant Interior" 
+                             class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px]">
+                        <div class="absolute -bottom-6 -right-6 bg-darker p-6 rounded-xl border border-gold/30 glass-effect">
+                            <div class="text-4xl font-bold text-gold mb-1">40+</div>
+                            <div class="text-sm text-gray-400">Years of Excellence</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal">
+                    <h2 class="text-gold text-sm font-bold tracking-widest uppercase mb-4">Our Story</h2>
+                    <h3 class="font-serif text-4xl md:text-5xl font-bold mb-6 text-white">A Legacy of <span class="text-gradient">Culinary Excellence</span></h3>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                        Located in the heart of Mumbai, Paramount Restaurant has been serving authentic Indian and continental cuisine since 1985. Our chefs combine traditional recipes with modern techniques to create unforgettable dining experiences.
+                    </p>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                        Whether you're craving spicy North Indian curries, fresh seafood, or our famous biryanis, every dish is prepared with love and the finest ingredients.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <i class="fas fa-award text-gold text-3xl mb-2"></i>
+                            <div class="text-white font-bold">Award Winning</div>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-leaf text-gold text-3xl mb-2"></i>
+                            <div class="text-white font-bold">Fresh Daily</div>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-users text-gold text-3xl mb-2"></i>
+                            <div class="text-white font-bold">Family Friendly</div>
+                        </div>
+                    </div>
+
+                    <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold hover:gap-4 transition-all duration-300">
+                        Reserve Your Table <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-darker">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-gold text-sm font-bold tracking-widest uppercase mb-4">Our Menu</h2>
+                <h3 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4">Signature <span class="text-gradient">Dishes</span></h3>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explore our carefully curated selection of authentic Indian and continental delicacies</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Item 1 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Butter Chicken" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹450</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Butter Chicken</h4>
+                        <p class="text-gray-400 mb-4">Creamy tomato-based curry with tender chicken pieces, butter, and aromatic spices</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gold text-sm"><i class="fas fa-fire mr-1"></i> Chef's Special</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Biryani" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹380</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Hyderabadi Biryani</h4>
+                        <p class="text-gray-400 mb-4">Fragrant basmati rice layered with marinated meat, saffron, and caramelized onions</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gold text-sm"><i class="fas fa-star mr-1"></i> Popular</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 3 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Paneer Tikka" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹320</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Paneer Tikka</h4>
+                        <p class="text-gray-400 mb-4">Grilled cottage cheese cubes marinated in yogurt and tandoori spices</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-green-500 text-sm"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Rogan Josh" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹520</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Rogan Josh</h4>
+                        <p class="text-gray-400 mb-4">Kashmiri lamb curry with intense flavors of red chilies, yogurt, and aromatic spices</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-red-500 text-sm"><i class="fas fa-pepper-hot mr-1"></i> Spicy</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 5 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Dal Makhani" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹280</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Dal Makhani</h4>
+                        <p class="text-gray-400 mb-4">Creamy black lentils slow-cooked overnight with butter and cream</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-green-500 text-sm"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Item 6 -->
+                <div class="menu-item group glass-effect rounded-2xl overflow-hidden hover-lift scroll-reveal">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             alt="Naan Basket" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 rounded-full font-bold">₹180</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-2xl font-bold text-white mb-2">Naan Basket</h4>
+                        <p class="text-gray-400 mb-4">Assorted fresh breads - butter naan, garlic naan, and laccha paratha</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gold text-sm"><i class="fas fa-bread-slice mr-1"></i> Fresh</span>
+                            <button class="text-white hover:text-gold transition-colors"><i class="fas fa-plus-circle text-2xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="px-8 py-3 border-2 border-gold text-gold rounded-full hover:bg-gold hover:text-black transition-all duration-300 font-semibold">
+                    View Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-dark relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/food.png')] opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div class="scroll-reveal p-6 rounded-2xl glass-effect hover-lift">
+                    <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-concierge-bell text-gold text-2xl"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold mb-2">Fine Dining</h4>
+                    <p class="text-gray-400 text-sm">Elegant atmosphere perfect for special occasions</p>
+                </div>
+                
+                <div class="scroll-reveal p-6 rounded-2xl glass-effect hover-lift" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-motorcycle text-gold text-2xl"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold mb-2">Fast Delivery</h4>
+                    <p class="text-gray-400 text-sm">Hot food delivered to your doorstep in 30 mins</p>
+                </div>
+                
+                <div class="scroll-reveal p-6 rounded-2xl glass-effect hover-lift" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-wine-glass text-gold text-2xl"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold mb-2">Full Bar</h4>
+                    <p class="text-gray-400 text-sm">Premium selection of wines and cocktails</p>
+                </div>
+                
+                <div class="scroll-reveal p-6 rounded-2xl glass-effect hover-lift" style="transition-delay: 300ms;">
+                    <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calendar-check text-gold text-2xl"></i>
+                    </div>
+                    <h4 class="font-serif text-xl font-bold mb-2">Event Hosting</h4>
+                    <p class="text-gray-400 text-sm">Private dining spaces for celebrations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-darker">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-gold text-sm font-bold tracking-widest uppercase mb-4">Gallery</h2>
+                <h3 class="font-serif text-4xl md:text-5xl font-bold text-white">Our <span class="text-gradient">Ambiance</span></h3>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="space-y-4">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-48 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Dining Area">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-64 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Food Plating">
+                </div>
+                <div class="space-y-4 mt-8">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-64 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Interior">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-48 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Dish">
+                </div>
+                <div class="space-y-4">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-48 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Bar">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-64 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Restaurant">
+                </div>
+                <div class="space-y-4 mt-8">
+                    <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-64 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Cocktails">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                         class="w-full h-48 object-cover rounded-xl hover:opacity-80 transition-opacity cursor-pointer hover-lift" alt="Dessert">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="scroll-reveal">
+                    <h2 class="text-gold text-sm font-bold tracking-widest uppercase mb-4">Visit Us</h2>
+                    <h3 class="font-serif text-4xl md:text-5xl font-bold text-white mb-6">Book Your <span class="text-gradient">Table</span></h3>
+                    <p class="text-gray-400 mb-8 text-lg">Experience the finest dining in Mumbai. Reserve your table now for an unforgettable culinary journey.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-gold text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Location</h4>
+                                <p class="text-gray-400">Gamdevi, Mumbai, Maharashtra 400007<br>Near Birla Kreeda Kendra</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-gold text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Opening Hours</h4>
+                                <p class="text-gray-400">Mon-Sun: 11:00 AM - 11:00 PM<br>Friday-Saturday: 11:00 AM - 12:00 AM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone-alt text-gold text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Contact</h4>
+                                <p class="text-gray-400">+91 22 1234 5678<br>info@paramountrestaurant.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold hover:bg-gold hover:text-black transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold hover:bg-gold hover:text-black transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold hover:bg-gold hover:text-black transition-all duration-300">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold hover:bg-gold hover:text-black transition-all duration-300">
+                            <i class="fab fa-zomato"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="scroll-reveal">
+                    <form class="glass-effect p-8 rounded-2xl space-y-6" onsubmit="event.preventDefault(); alert('Reservation request sent! We will contact you shortly.');">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm">Name</label>
+                                <input type="text" class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" placeholder="Your Name" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm">Phone</label>
+                                <input type="tel" class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" placeholder="+91 98765 43210" required>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm">Date</label>
+                                <input type="date" class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm">Time</label>
+                                <select class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" required>
+                                    <option value="">Select Time</option>
+                                    <option>12:00 PM</option>
+                                    <option>1:00 PM</option>
+                                    <option>2:00 PM</option>
+                                    <option>7:00 PM</option>
+                                    <option>8:00 PM</option>
+                                    <option>9:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-400 mb-2 text-sm">Guests</label>
+                            <select class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" required>
+                                <option value="">Number of Guests</option>
+                                <option>2 People</option>
+                                <option>4 People</option>
+                                <option>6 People</option>
+                                <option>8+ People</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-400 mb-2 text-sm">Special Requests</label>
+                            <textarea rows="3" class="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors" placeholder="Any dietary requirements or special occasions..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-gold to-yellow-600 text-black font-bold py-4 rounded-lg hover:shadow-lg hover:shadow-gold/50 transition-all duration-300 transform hover:scale-[1.02]">
+                            Reserve Table Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="h-96 w-full bg-gray-800 relative">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.0387734!2d72.8395774!3d19.0387734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c92da7b77f3f%3A0xae15f7183b5251db!2sParamount%20Restaurant!5e0!3m2!1sen!2sin!4v1709123456789!5m2!1sen!2sin"
+            width="100%" 
+            height="100%" 
+            style="border:0; filter: invert(90%) hue-rotate(180deg);" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="absolute bottom-4 right-4 bg-darker p-4 rounded-lg border border-gold/30 glass-effect">
+            <a href="https://www.google.com/maps/dir//Paramount+Restaurant,+Mumbai" target="_blank" class="flex items-center gap-2 text-gold font-semibold hover:text-white transition-colors">
+                <i class="fas fa-directions"></i> Get Directions
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darker border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-gold to-yellow-600 rounded-full flex items-center justify-center">
+                            <span class="text-black font-bold">P</span>
+                        </div>
+                        <span class="font-serif text-xl font-bold text-white">Paramount</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Serving authentic Indian cuisine with love since 1985. Experience the taste of tradition.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#home" class="hover:text-gold transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-gold transition-colors">About Us</a></li>
+                        <li><a href="#menu" class="hover:text-gold transition-colors">Menu</a></li>
+                        <li><a href="#contact" class="hover:text-gold transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>Dine-in</li>
+                        <li>Takeaway</li>
+                        <li>Home Delivery</li>
+                        <li>Catering</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Subscribe for special offers and updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="bg-dark border border-gray-700 rounded-l-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-gold flex-1">
+                        <button class="bg-gold text-black px-4 py-2 rounded-r-lg font-semibold hover:bg-yellow-600 transition-colors">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">&copy; 2026 Paramount Restaurant. All rights reserved.</p>
+                <div class="flex gap-6 text-gray-500 text-sm">
+                    <a href="#" class="hover:text-gold transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-gold transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+            class="fixed bottom-8 right-8 bg-gold text-black w-12 h-12 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:scale-110 z-50 flex items-center justify-center">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('backToTop');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-darker/95', 'backdrop-blur-lg', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-darker/95', 'backdrop-blur-lg', 'shadow-lg');
+            }
+            
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Add to Cart Animation
+        document.querySelectorAll('.fa-plus-circle').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(1.3)';
+                this.style.color = '#D4AF37';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
